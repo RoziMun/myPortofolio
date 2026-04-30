@@ -5,9 +5,14 @@ import connectDB from "./config/Database.js";
 import router from "./routes/router.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 connectDB();
 
@@ -40,7 +45,7 @@ const swaggerOptions ={
             },
         },
     },
-    apis: ["./routes/router.js"],
+    apis: [path.join(__dirname, "./routes/router.js")],
 };
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
