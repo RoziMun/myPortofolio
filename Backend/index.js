@@ -44,7 +44,9 @@ const swaggerOptions ={
 };
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {customCssUrl: CSS_URL}));
+const JS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui-bundle.js";
+const PRESET_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui-standalone-preset.js";
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {customCssUrl: CSS_URL, customJs: [JS_URL, PRESET_URL]}));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, ()=> console.log(`Server running at port ${PORT} 🚀`));
