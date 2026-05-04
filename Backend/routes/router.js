@@ -7,6 +7,7 @@ import { getProject, postProject, deleteProject, updateProject, getProjectByName
 import { deleteTechStack, getTechStack, getTechStackById, getTechStackByName, postTechStack, updateTechStack } from "../controllers/techStackController.js";
 import { addEducation, deleteEducation, getEducation, getEducationById, getEducationByName, updateEducation } from "../controllers/educationController.js";
 import { addDocumentation, deleteDocumentation, getDocumentation, getDocumentationById, getDocumentationByName, updateDocumentation } from "../controllers/documentationController.js";
+import { addMyCv, deleteCV, getMyCv, updateCV } from "../controllers/myCvController.js";
 
 
 const router = express.Router();
@@ -1007,7 +1008,7 @@ router.get('/documentation/:id', getDocumentationById);
  *       200:
  *         description: Add Documentation Successfully
 */
-router.post('/documentation', addDocumentation);
+router.post('/documentation',verifyToken, addDocumentation);
 /**
  * @swagger
  * /documentation:
@@ -1030,7 +1031,7 @@ router.post('/documentation', addDocumentation);
  *       200:
  *         description: Delete Documentation Successfully
 */
-router.delete('/documentation', deleteDocumentation);
+router.delete('/documentation', verifyToken, deleteDocumentation);
 /**
  * @swagger
  * /documentation:
@@ -1057,6 +1058,98 @@ router.delete('/documentation', deleteDocumentation);
  *       200:
  *         description: Update Documentation Successfully
 */
-router.put('/documentation', updateDocumentation);
+router.put('/documentation',verifyToken, updateDocumentation);
+/**
+ * @swagger
+ * /myCv:
+ *  get:
+ *     tags:
+ *      - My CV
+ *     summary: Get My CV
+ *     responses:
+ *       200:
+ *         description: Get My CV Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   pdf:
+ *                     type: string
+*/
+router.get('/myCv', getMyCv);
+/**
+ * @swagger
+ * /myCv:
+ *   post:
+ *     tags:
+ *      - My CV
+ *     summary: Add My CV
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               pdf:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Add My CV Successfully
+*/
+router.post('/myCv', addMyCv);
+/**
+ * @swagger
+ * /myCv:
+ *   delete:
+ *     tags:
+ *      - My CV
+ *     summary: Delete My CV
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               pdf:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Delete My CV Successfully
+*/
+router.delete('/myCv', deleteCV);
+/**
+ * @swagger
+ * /myCv:
+ *   put:
+ *     tags:
+ *      - My CV
+ *     summary: Update My CV
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldPdf:
+ *                 type: string
+ *               pdf:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Update My CV Successfully
+*/
+router.put('/myCv', updateCV);
 
 export default router;
