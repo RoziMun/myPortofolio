@@ -4,7 +4,9 @@ import { deleteAcc, getUsers, handleLogout, login, register } from "../controlle
 import { verifyToken } from "../auth/verifyToken.js";
 import { deleteContact, getContact, getContactById, getContactByName, postContact, updateContact } from "../controllers/contactMe.js";
 import { getProject, postProject, deleteProject, updateProject, getProjectByName, getProjectById } from "../controllers/projectController.js";
-import { deleteTechStack, getTechStack, postTechStack, updateTechStack } from "../controllers/techStackController.js";
+import { deleteTechStack, getTechStack, getTechStackById, getTechStackByName, postTechStack, updateTechStack } from "../controllers/techStackController.js";
+import { addEducation, deleteEducation, getEducation, getEducationById, getEducationByName, updateEducation } from "../controllers/educationController.js";
+import { addDocumentation, deleteDocumentation, getDocumentation, getDocumentationById, getDocumentationByName, updateDocumentation } from "../controllers/documentationController.js";
 
 
 const router = express.Router();
@@ -105,7 +107,7 @@ router.get('/achievement', getAchievement);
  *         description: Name Achievement is required
  *       404:
  *         description: Achievement not found
- */
+*/
 router.get('/achievement/name', getOneAchievement);
 /**
  * @swagger
@@ -124,7 +126,7 @@ router.get('/achievement/name', getOneAchievement);
  *     responses:
  *       200:
  *         description: Get Achivement By ID is Successfully
- */
+*/
 router.get('/achievement/:id', getAchievementById);
 
 /**
@@ -255,6 +257,8 @@ router.get('/contactMe',verifyToken, getContact);
  *     tags:
  *       - Contact Me
  *     summary: Get Contact By Name
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: yourName
@@ -269,7 +273,7 @@ router.get('/contactMe',verifyToken, getContact);
  *         description: Name Contact is required
  *       404:
  *         description: Contact not found
- */
+*/
 router.get('/contactMe/name',verifyToken, getContactByName)
 /**
  * @swagger
@@ -278,6 +282,8 @@ router.get('/contactMe/name',verifyToken, getContactByName)
  *     tags:
  *       - Contact Me
  *     summary: Get Contact By Id
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -289,7 +295,7 @@ router.get('/contactMe/name',verifyToken, getContactByName)
  *     responses:
  *       200:
  *         description: Get Contact By ID is Successfully
- */
+*/
 router.get('/contactMe/:id', verifyToken, getContactById)
 
 /**
@@ -375,7 +381,7 @@ router.delete('/contactMe',verifyToken ,deleteContact);
 router.put('/contactMe',verifyToken, updateContact);
 
 // =========== SWAGGER ============
-// =========== CONTACT ME ============
+// =========== PROJECT ============
 
 /**
  * @swagger
@@ -443,7 +449,7 @@ router.get('/project', getProject);
  *         description: Name Project is required
  *       404:
  *         description: Project not found
- */
+*/
 router.get('/project/name', getProjectByName)
 /**
  * @swagger
@@ -462,7 +468,7 @@ router.get('/project/name', getProjectByName)
  *     responses:
  *       200:
  *         description: Get Project By ID is Successfully
- */
+*/
 
 router.get('/project/:id', getProjectById)
 
@@ -515,8 +521,8 @@ router.get('/project/:id', getProjectById)
  *     responses:
  *       200:
  *         description: Add Project Successfully
- */
-router.post('/project', postProject);
+*/
+router.post('/project',verifyToken, postProject);
 
 /**
  * @swagger
@@ -540,7 +546,7 @@ router.post('/project', postProject);
  *       200:
  *         description: Delete Contact Successfully
 */
-router.delete('/project', deleteProject);
+router.delete('/project',verifyToken, deleteProject);
 
 /**
  * @swagger
@@ -593,8 +599,8 @@ router.delete('/project', deleteProject);
  *     responses:
  *       200:
  *         description: Update Project Successfully
- */
-router.put('/project', updateProject);
+*/
+router.put('/project',verifyToken, updateProject);
 
 // =================   SWAGGER  ===============
 // ================= TECH STACK ===============
@@ -620,12 +626,50 @@ router.put('/project', updateProject);
  *                     type: string
  *                   icon:
  *                     type: string
- *                   projectId:
- *                     type: array
- *                     items:
- *                      type: string
 */
 router.get('/techStack', getTechStack);
+/**
+ * @swagger
+ * /techStack/name:
+ *   get:
+ *     tags:
+ *       - Tech Stack
+ *     summary: Get Tech Stack By Name
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Name Tech Stack
+ *     responses:
+ *       302:
+ *         description: Redirect to /Tech Stack/{id}
+ *       400:
+ *         description: Name Tech Stack is required
+ *       404:
+ *         description: Tech Stack not found
+*/
+router.get('/techStack/name', getTechStackByName);
+/**
+ * @swagger
+ * /techStack/{id}:
+ *   get:
+ *     tags:
+ *       - Tech Stack
+ *     summary: Get Tech Stack By ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Name Tech Stack
+ *     responses:
+ *       200:
+ *         description: Get Tech Stack By ID is Successfully
+*/
+router.get('/techStack/:id', getTechStackById)
 
 /**
  * @swagger
@@ -647,12 +691,6 @@ router.get('/techStack', getTechStack);
  *                 type: string
  *               icon:
  *                 type: string
- *               projectId:
- *                 type: array
- *                 items:
- *                  type: string
- *                  description: "ID of the Tech Stack"
- *                  example: "60d5ec3a1029830015b3c321"
  *     responses:
  *       200:
  *         description: Add Tech Stack Successfully
@@ -705,16 +743,320 @@ router.delete('/techStack',verifyToken, deleteTechStack);
  *                 type: string
  *               icon:
  *                 type: string
- *               projectId:
- *                 type: array
- *                 items:
- *                  type: string
- *                  description: "ID of the Tech Stack"
- *                  example: "60d5ec3a1029830015b3c321"
  *     responses:
  *       200:
  *         description: Update Tech Stack Successfully
- */
+*/
 router.put('/techStack',verifyToken, updateTechStack);
+
+// ================ SWAGGER ===================
+// =============== EDUCATION ===================
+
+/**
+ * @swagger
+ * /education:
+ *  get:
+ *     tags:
+ *      - Education
+ *     summary: Get Education
+ *     responses:
+ *       200:
+ *         description: Get Education Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   institution:
+ *                     type: string
+ *                   major:
+ *                     type: string
+ *                   startDate:
+ *                     type: string
+ *                   endDate:
+ *                     type: string
+ *                   description:
+ *                     type: string
+*/
+router.get('/education', getEducation);
+/**
+ * @swagger
+ * /education/name:
+ *   get:
+ *     tags:
+ *       - Education
+ *     summary: Get Education By Name
+ *     parameters:
+ *       - in: query
+ *         name: institution
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Name Institution
+ *     responses:
+ *       302:
+ *         description: Redirect to /institution/{id}
+ *       400:
+ *         description: Name Institution is required
+ *       404:
+ *         description: Institution not found
+*/
+router.get('/education/name', getEducationByName);
+/**
+ * @swagger
+ * /education/{id}:
+ *   get:
+ *     tags:
+ *       - Education
+ *     summary: Get Education By ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID Institution
+ *     responses:
+ *       200:
+ *         description: Get Education By ID Successfully
+*/
+router.get('/education/:id', getEducationById);
+/**
+ * @swagger
+ * /education:
+ *   post:
+ *     tags:
+ *      - Education
+ *     summary: Add Education
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               institution:
+ *                 type: string
+ *               major:
+ *                 type: string
+ *               startDate:
+ *                 type: string
+ *                 format: date
+ *               endDate:
+ *                 type: string
+ *                 format: date
+ *               description:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Add Education Successfully
+*/
+router.post('/education',verifyToken, addEducation);
+/**
+ * @swagger
+ * /education:
+ *   delete:
+ *     tags:
+ *      - Education
+ *     summary: Delete Education
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               institution:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Delete Education Successfully
+*/
+router.delete('/education',verifyToken, deleteEducation);
+/**
+ * @swagger
+ * /education:
+ *   put:
+ *     tags:
+ *      - Education
+ *     summary: Update Education
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldInstitution:
+ *                 type: string
+ *               institution:
+ *                 type: string
+ *               major:
+ *                 type: string
+ *               startDate:
+ *                 type: string
+ *                 format: date
+ *               endDate:
+ *                 type: string
+ *                 format: date
+ *               description:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Update Education Successfully
+*/
+router.put('/education',verifyToken, updateEducation);
+
+// ================== SWAGGER ===================
+// ================ DOCUMENTATION ===================
+
+/**
+ * @swagger
+ * /documentation:
+ *  get:
+ *     tags:
+ *      - Documentation
+ *     summary: Get Documentation
+ *     responses:
+ *       200:
+ *         description: Get All Documentation Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                   imageUrl:
+ *                     type: string
+*/
+router.get('/documentation', getDocumentation);
+/**
+ * @swagger
+ * /documentation/name:
+ *   get:
+ *     tags:
+ *       - Documentation
+ *     summary: Get Documentation By Name
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Name Documentation
+ *     responses:
+ *       302:
+ *         description: Redirect to /documentation/{id}
+ *       400:
+ *         description: Name Documentation is required
+ *       404:
+ *         description: Documentation not found
+*/
+router.get('/documentation/name', getDocumentationByName);
+/**
+ * @swagger
+ * /documentation/{id}:
+ *   get:
+ *     tags:
+ *       - Documentation
+ *     summary: Get Documentation By ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID Documentation
+ *     responses:
+ *       200:
+ *         description: Get Documentation By ID Successfully
+*/
+router.get('/documentation/:id', getDocumentationById);
+/**
+ * @swagger
+ * /documentation:
+ *   post:
+ *     tags:
+ *      - Documentation
+ *     summary: Add Documentation
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               imageUrl:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Add Documentation Successfully
+*/
+router.post('/documentation', addDocumentation);
+/**
+ * @swagger
+ * /documentation:
+ *   delete:
+ *     tags:
+ *      - Documentation
+ *     summary: Delete Documentation
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Delete Documentation Successfully
+*/
+router.delete('/documentation', deleteDocumentation);
+/**
+ * @swagger
+ * /documentation:
+ *   put:
+ *     tags:
+ *      - Documentation
+ *     summary: Update Documentation
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldName:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               imageUrl:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Update Documentation Successfully
+*/
+router.put('/documentation', updateDocumentation);
 
 export default router;

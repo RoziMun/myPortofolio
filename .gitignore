@@ -1,6 +1,8 @@
 node_modules/
 Backend/node_modules/
 
+request.rest
+
 .env
 
 npm-debug.log*

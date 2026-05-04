@@ -146,14 +146,17 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5000/techStack
-
+###
+GET http://localhost:5000/techStack/name?name=nodejs
+###
+GET http://localhost:5000/techStack/69f44e9f35a61afd14a4baac
 ###
 POST http://localhost:5000/techStack
 Content-Type: application/json
 
 {
-    "name": "react",
-    "icon": "react.jpg",
+    "name": "string",
+    "icon": "nodejs.jpg",
     "projectId": null
 }
 
@@ -174,4 +177,75 @@ Content-Type: application/json
     "name": "testing",
     "icon": "testing",
     "projectId": null
+}
+
+// ============= EDUCATION ============
+
+###
+GET http://localhost:5000/education
+###
+GET http://localhost:5000/education/name?institution=coba
+###
+GET http://localhost:5000/education/69f5f2b626b6ca0706dd2049
+###
+POST http://localhost:5000/education
+Content-Type: application/json
+
+{
+    "institution": "coba",
+    "major": "coba",
+    "startDate": "2025-03-20",
+    "endDate" : "2026-06-21",
+    "description": "coba"
+}
+###
+DELETE http://localhost:5000/education
+Content-Type: application/json
+
+{
+    "institution": "coba"
+}
+###
+PUT http://localhost:5000/education
+Content-Type: application/json
+
+{
+    "oldInstitution": "testing",
+    "major": "cobacoba",
+    "institution": "cobacoba",
+    "startDate": "2000-05-01",
+    "endDate": "2005-07-09",
+    "description": "cobacoba"
+}
+
+// ============ DOCUMENTATION ===========
+###
+GET http://localhost:5000/documentation
+###
+GET http://localhost:5000/documentation/name?name=testing
+###
+GET http://localhost:5000/documentation/69f715bea5551fa998a35d87
+###
+POST http://localhost:5000/documentation
+Content-Type: application/json
+
+{
+    "name": "coba",
+    "imageUrl": "coba"
+}
+###
+DELETE http://localhost:5000/documentation
+Content-Type: application/json
+
+{
+    "name": "coba"
+}
+###
+PUT http://localhost:5000/documentation
+Content-Type: application/json
+
+{
+    "oldName": "testing",
+    "name": "cobacoba",
+    "imageUrl": "cobacoba"
 }
